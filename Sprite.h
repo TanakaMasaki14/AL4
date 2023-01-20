@@ -160,7 +160,9 @@ public: // メンバ関数
 	/// </summary>
 	void Draw();
 
-	//座標の取得
+	/// <summary>
+	/// 座標の取得
+	/// </summary>
 	const XMFLOAT2& GetPosition() { return position; }
 
 private: // メンバ変数
@@ -199,4 +201,3 @@ private: // メンバ関数
 	/// </summary>
 	void TransferVertices();
 };
-

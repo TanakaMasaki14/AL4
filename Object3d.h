@@ -5,6 +5,7 @@
 #include <d3d12.h>
 #include <DirectXMath.h>
 #include <d3dx12.h>
+#include <string>
 
 /// <summary>
 /// 3Dオブジェクト
@@ -39,25 +40,27 @@ public: // サブクラス
 	// 定数バッファ用データ構造体B1
 	struct ConstBufferDataB1
 	{
-		XMFLOAT3 ambient; //アンビエント係数
-		float pad1; //パディング
-		XMFLOAT3 diffuse; //ディヒューズ係数
-		float pad2; //パディング
-		XMFLOAT3 specular; //スペキュラー係数
-		float alpha; //アルファ
-
+		XMFLOAT3 ambient;
+		float pad1;
+		XMFLOAT3 diffuse;
+		float pad2;
+		XMFLOAT3 specular;
+		float alpha;
 	};
 
-	struct Material {
-		std::string name; //マテリアル名
-		XMFLOAT3 ambient; //アンビエント影響度
-		XMFLOAT3 diffuse; //ディフューズ影響度
-		XMFLOAT3 specular; //スペキュラー影響度
-		float alpha; //アルファ
-		std::string textureFilename; //テクスチャファイル名
+	//マテリアル
+	struct Material
+	{
+		std::string name;	//マテリアル名
+		XMFLOAT3 ambient;	//アンビエント影響度
+		XMFLOAT3 diffuse;	//ディフューズ影響度
+		XMFLOAT3 specular;	//スペキュラー影響度
+		float alpha;		//アルファ
+		std::string textureFilename;//テクスチャファイル名
+
 		//コンストラクタ
 		Material() {
-			ambient = { 0.3f,0.3f,0.3f };
+			ambient = { 0.3f, 0.3f, 0.3f };
 			diffuse = { 0.0f,0.0f,0.0f };
 			specular = { 0.0f,0.0f,0.0f };
 			alpha = 1.0f;
@@ -69,7 +72,8 @@ private: // 定数
 	static const float radius;				// 底面の半径
 	static const float prizmHeight;			// 柱の高さ
 	static const int planeCount = division * 2 + division * 2;		// 面の数
-	static const int vertexCount = planeCount * 3;		// 頂点数
+	static const int vertexCount = 4;		// 頂点数
+	static const int indexCount = 3 * 2;		// インデックス数
 
 public: // 静的メンバ関数
 	/// <summary>
@@ -128,9 +132,10 @@ public: // 静的メンバ関数
 	static void CameraMoveVector(XMFLOAT3 move);
 
 	/// <summary>
-	///	マテリアル読み込み
+	/// ベクトルによる視点移動
 	/// </summary>
-	static void LoadMaterial(const std::string& directoryPath, const std::string& filename);
+	static void CameraMoveEyeVector(XMFLOAT3 move);
+
 
 private: // 静的メンバ変数
 	// デバイス
@@ -170,10 +175,10 @@ private: // 静的メンバ変数
 	// インデックスバッファビュー
 	static D3D12_INDEX_BUFFER_VIEW ibView;
 	// 頂点データ配列
+	//static VertexPosNormalUv vertices[vertexCount];
 	static std::vector<VertexPosNormalUv> vertices;
 	// 頂点インデックス配列
 	static std::vector<unsigned short> indices;
-
 	//マテリアル
 	static Material material;
 
@@ -199,7 +204,7 @@ private:// 静的メンバ関数
 	/// <summary>
 	/// テクスチャ読み込み
 	/// </summary>
-	//static void LoadTexture();
+	static bool LoadTexture(const std::string& directoryPath, const std::string& filename);
 
 	/// <summary>
 	/// モデル作成
@@ -212,9 +217,9 @@ private:// 静的メンバ関数
 	static void UpdateViewMatrix();
 
 	/// <summary>
-	/// テクスチャ読み込み
+	/// マテリアルの読み込み
 	/// </summary>
-	static bool LoadTexture(const std::string& directoryPath, const std::string& filename);
+	static void LoadMaterial(const std::string& directoryPath, const std::string& filename);
 
 public: // メンバ関数
 	bool Initialize();
@@ -256,4 +261,3 @@ private: // メンバ変数
 	// 親オブジェクト
 	Object3d* parent = nullptr;
 };
-

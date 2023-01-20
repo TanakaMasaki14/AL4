@@ -24,6 +24,9 @@ private: // エイリアス
 private: // 静的メンバ変数
 	static const int debugTextTexNumber = 0;
 
+	Sprite* sprite1 = nullptr;
+	Sprite* sprite2 = nullptr;
+
 public: // メンバ関数
 
 	/// <summary>
@@ -61,8 +64,11 @@ private: // メンバ変数
 	/// </summary>
 	Sprite* spriteBG = nullptr;
 	Object3d* object3d = nullptr;
-
-	Sprite* sprite1 = nullptr;
-	Sprite* sprite2 = nullptr;
 };
 
+template<class T>
+inline void safe_delete(T*& p)
+{
+	delete p;
+	p = nullptr;
+}
